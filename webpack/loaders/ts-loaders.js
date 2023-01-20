@@ -1,5 +1,5 @@
 module.exports = [
-  {
-    loader: 'ts-loader'
-  }
+    {
+        loader: 'ts-loader',
+    },
 ];

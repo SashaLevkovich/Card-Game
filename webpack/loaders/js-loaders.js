@@ -1,5 +1,5 @@
 module.exports = [
-  {
-    loader: 'babel-loader'
-  }
+    {
+        loader: 'babel-loader',
+    },
 ];

@@ -1,17 +1,13 @@
-import { Game, Types, AUTO } from 'phaser'
-import { PreloadScene } from './scenes/PreloadScene'
-import { GameScene } from './scenes/GameScene'
-import gameConfig from './gameConfig'
+import { Game, Types, AUTO } from 'phaser';
+import { GameScene } from './scenes/GameScene';
+import { PreloadScene } from './scenes/PreloadScene';
 
 const config: Types.Core.GameConfig = {
-  type: AUTO,
-  width: gameConfig.screenWidth,
-  height: gameConfig.screenHeight,
-  backgroundColor: gameConfig.backgroundColor,
-  scene: [
-    PreloadScene,
-    GameScene
-  ]
-}
+    type: AUTO,
+    width: 1280,
+    height: 980,
+    backgroundColor: '#6e6666',
+    scene: [PreloadScene, GameScene],
+};
 
-new Game(config)
+new Game(config);
