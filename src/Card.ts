@@ -23,15 +23,52 @@ export class Card extends GameObjects.Sprite {
         return this._isOpen;
     }
 
-    open() {
-        this._isOpen = true;
-
-        this.setTexture(`card${this.id}`);
+    move(x: number, y: number) {
+        return new Promise(animationResolve => {
+            this.scene.tweens.add({
+                targets: this,
+                ease: 'Linear',
+                x,
+                y,
+                duration: 200,
+                onComplete: animationResolve,
+            });
+        });
     }
 
-    close() {
-        this._isOpen = false;
+    flip() {
+        return new Promise(animationResolve => {
+            const show = () => {
+                const texture = this._isOpen ? `card${this.id}` : `card`;
 
-        this.setTexture('card');
+                this.setTexture(texture);
+
+                this.scene.tweens.add({
+                    targets: this,
+                    scaleX: 1,
+                    ease: 'Linear',
+                    duration: 150,
+                    onComplete: animationResolve,
+                });
+            };
+
+            this.scene.tweens.add({
+                targets: this,
+                scaleX: 0,
+                ease: 'Linear',
+                duration: 150,
+                onComplete: show,
+            });
+        });
+    }
+
+    async open() {
+        this._isOpen = true;
+        await this.flip();
+    }
+
+    async close() {
+        this._isOpen = false;
+        await this.flip();
     }
 }

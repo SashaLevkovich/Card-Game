@@ -15,10 +15,10 @@ export class CardDealer {
         this._scene = scene;
     }
 
-    openCard(card: Card) {
+    async openCard(card: Card) {
         if (card.isOpen) return;
 
-        card.open();
+        await card.open();
 
         if (!this.prevOpenCard) {
             this.prevOpenCard = card;
@@ -28,8 +28,7 @@ export class CardDealer {
         if (this.prevOpenCard.id === card.id) {
             this.guessedPairs += 1;
         } else {
-            this.prevOpenCard.close();
-            card.close();
+            await Promise.all([this.prevOpenCard.close(), card.close()]);
         }
 
         this.prevOpenCard = null;
@@ -39,7 +38,7 @@ export class CardDealer {
         }
     }
 
-    createCards() {
+    async createCards() {
         const allCardPosition = Utils.Array.Shuffle([
             ...this.possibleCardIds,
             ...this.possibleCardIds,
@@ -47,11 +46,21 @@ export class CardDealer {
 
         const cardPositions = this.getCardPositions();
 
-        allCardPosition.forEach((cardId, idx) => {
-            const { x, y } = cardPositions[idx];
+        let i = 0;
 
-            new Card(this._scene, { x, y, id: cardId });
-        });
+        for (const cardId of allCardPosition) {
+            const { x, y } = cardPositions[i];
+            const card = new Card(this._scene, {
+                x: -200,
+                y: -200,
+                id: cardId,
+            });
+
+            await card.move(x, y);
+            i++;
+        }
+
+        i = NaN;
     }
 
     private getCardPositions() {
